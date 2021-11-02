@@ -21,6 +21,9 @@ public class MyDriverManager {
         loadInitialDrivers();
     }
 
+    //禁止创建实例
+    private MyDriverManager(){};
+
     /**
      * 获取连接
      * @param url
