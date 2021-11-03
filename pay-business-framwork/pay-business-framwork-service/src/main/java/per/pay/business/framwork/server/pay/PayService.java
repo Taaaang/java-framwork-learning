@@ -25,7 +25,7 @@ public class PayService {
             return PayResponseBO.failed(PayResponseBO.ACCESS_LIMIT_ERROR,"完成准备阶段验证失败!");
         }
         //进行支付流程
-        toPay();
+        toPay(requestBO);
         //数据解析
 
         return resultBO;
@@ -34,10 +34,13 @@ public class PayService {
     /**
      * 创建支付信息
      */
-    private PayResponseBO toPay(){
+    private PayResponseBO toPay(PayRequestBO payRequestBO){
+
+        //托管给PayManager
+        payManager.payByChannel(payRequestBO);
+
         //创建支付信息，进行初次存档
         PayBaseInfoDO payBaseInfoDO = initPayBaseInfo();
-        //托管给PayManager
 
         //更新支付信息,记录相应支付的扩展表
         if(!updateSecondPayInfo()){

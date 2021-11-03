@@ -2,6 +2,8 @@ package per.pay.business.framwork.server.support;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import per.pay.business.framwork.api.entity.PaySupplierEnum;
+import per.pay.business.framwork.api.entity.PayTypeEnum;
 
 /**
  * 支付宝原生app支付属性加载器
@@ -9,10 +11,13 @@ import org.springframework.util.Assert;
 @Component
 public class AliAppOriginPayPropertyProvider implements IPayPropertyProvider<AliAppOriginPayPropertyProvider.AllAppOriginPayProperty> {
 
-    private static final String SIGN="AliAppOrigin";
+    private static final String[] SIGN=new String[]{
+            PayTypeEnum.ALI_APP.getSign(),
+            PaySupplierEnum.Ali.getSign()
+    };
 
 
-    public AllAppOriginPayProperty getProperty(String channelSign) {
+    public AllAppOriginPayProperty getProperty(String[] channelSign) {
         if(!isAllow(channelSign)){
             return null;
         }
@@ -20,9 +25,9 @@ public class AliAppOriginPayPropertyProvider implements IPayPropertyProvider<Ali
         return allAppOriginPayProperty;
     }
 
-    public boolean isAllow(String channelSign) {
-        Assert.hasText(channelSign,"channelSign is Empty ! pls check it");
-        return SIGN.equals(channelSign.trim());
+    public boolean isAllow(String[] channelSign) {
+        return SIGN[0].equals(channelSign[0].trim())&&
+                SIGN[1].equals(channelSign[1].trim());
     }
 
 

@@ -2,6 +2,8 @@ package per.pay.business.framwork.server.support;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import per.pay.business.framwork.api.entity.PaySupplierEnum;
+import per.pay.business.framwork.api.entity.PayTypeEnum;
 
 /**
  * 微信app原生支付属性加载器
@@ -9,18 +11,21 @@ import org.springframework.util.Assert;
 @Component
 public class WeChatAppOriginPayPropertyProvider implements IPayPropertyProvider<WeChatAppOriginPayPropertyProvider.WeChatAppOriginPayProperty> {
 
-    private static final String SIGN="WeChatAppOrigin";
+    private static final String[] SIGN=new String[]{
+            PayTypeEnum.WECHAT_APP.getSign(),
+            PaySupplierEnum.WeChat.getSign()
+    };
 
-    public WeChatAppOriginPayProperty getProperty(String channelSign) {
+    public WeChatAppOriginPayProperty getProperty(String[] channelSign) {
         if(!isAllow(channelSign)){
             return null;
         }
         return new WeChatAppOriginPayProperty();
     }
 
-    public boolean isAllow(String channelSign) {
-        Assert.hasText(channelSign,"channelSign is Empty ! pls check it");
-        return SIGN.equals(channelSign.trim());
+    public boolean isAllow(String[] channelSign) {
+        return SIGN[0].equals(channelSign[0].trim())&&
+                SIGN[1].equals(channelSign[1].trim());
     }
 
     public static class WeChatAppOriginPayProperty{

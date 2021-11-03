@@ -14,12 +14,15 @@ public abstract class AbstractPayChannelSelector {
     @Autowired
     private Gson gson;
 
-    public List<IPayChannel> toSelect(List<IPayChannel> list, IPayPropertyProvider property, PayRequestBO requestBO){
-        if(list==null||list.isEmpty()){
-            log.error("no suitable handler! property class name:[{}] payRequestBO:[{}]",property.getClass().getName(),gson.toJson(requestBO));
+    public List<IPayChannel> select(List<IPayChannel> list, PayRequestBO requestBO){
+        List<IPayChannel> iPayChannels = toSelect(list, requestBO);
+        if(iPayChannels==null||iPayChannels.isEmpty()){
+            log.error("no suitable handler!  payRequestBO:[{}]",gson.toJson(requestBO));
             throw new IllegalArgumentException("no suitable handler!");
         }
-        return list;
+        return iPayChannels;
     }
+
+    public abstract List<IPayChannel> toSelect(List<IPayChannel> list,  PayRequestBO requestBO);
 
 }

@@ -16,4 +16,10 @@ public class PayRequestBO {
     //付款金额
     private BigDecimal money;
 
+    //支付方式
+    private PayTypeEnum payType;
+
+    //支付提供商，非必填，如果填写将直接命中该渠道
+    private PaySupplierEnum supplierEnum;
+
 }
