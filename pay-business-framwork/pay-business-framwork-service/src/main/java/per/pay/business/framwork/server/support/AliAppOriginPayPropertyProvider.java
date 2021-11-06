@@ -25,6 +25,12 @@ public class AliAppOriginPayPropertyProvider implements IPayPropertyProvider<Ali
         return allAppOriginPayProperty;
     }
 
+    @Override
+    public void buildProperty(AllAppOriginPayProperty properties) {
+        //TODO
+        return;
+    }
+
     public boolean isAllow(String[] channelSign) {
         return SIGN[0].equals(channelSign[0].trim())&&
                 SIGN[1].equals(channelSign[1].trim());

@@ -50,14 +50,14 @@ public class PayManager implements ApplicationContextAware, SmartInitializingSin
         IPayChannel payChannel = toSelector(requestBO);
         //通过支付通道进行支付请求
         payChannel.payByChannel(requestBO);
-        //返回结果
+        //返回结果 TODO
         return;
     }
 
     private IPayChannel toSelector(PayRequestBO payRequestBO) {
         List<IPayChannel> channelsCopy=null;
-        //1.指定支付方式与渠道
         if(payRequestBO.getPayType()!=null&&payRequestBO.getSupplierEnum()!=null){
+            //1.指定支付方式与渠道
             IPayChannel payChannel = accurateGet(new String[]{payRequestBO.getPayType().getSign(), payRequestBO.getSupplierEnum().getSign()});
             channelsCopy = new ArrayList<>();
             channelsCopy.add(payChannel);

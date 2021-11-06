@@ -1,18 +1,29 @@
 package per.pay.business.framwork.server.pay.channel;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import per.pay.business.framwork.api.entity.PayRequestBO;
 import per.pay.business.framwork.api.entity.PaySupplierEnum;
 import per.pay.business.framwork.api.entity.PayTypeEnum;
 import per.pay.business.framwork.server.pay.IPayChannel;
+import per.pay.business.framwork.server.support.AliAppOriginPayPropertyProvider;
+import per.pay.business.framwork.server.support.IPayPropertyProvider;
+import per.pay.business.framwork.server.support.PayPropertyLoader;
 
 @Component
-public class AliAppOriginPayChannel implements IPayChannel {
+public class AliAppOriginPayChannel extends AbstractPayChannel {
 
     private static final String[] SIGNS=new String[]{
             PayTypeEnum.ALI_APP.getSign(),
             PaySupplierEnum.Ali.getSign()
     };
+
+
+    @Autowired
+    public AliAppOriginPayChannel(PayPropertyLoader propertyLoader) {
+        super(propertyLoader);
+    }
 
     @Override
     public String[] getChannelSign() {
@@ -22,6 +33,9 @@ public class AliAppOriginPayChannel implements IPayChannel {
     @Override
     public void payByChannel(PayRequestBO requestBO) {
         //获取配置属性
+        IPayPropertyProvider<AliAppOriginPayPropertyProvider.AllAppOriginPayProperty> property = propertyLoader.getPropertyProvider(SIGNS);
+        AliAppOriginPayPropertyProvider.AllAppOriginPayProperty properties = property.getProperty(SIGNS);
+        property.buildProperty(properties);
         //填充必要参数
         //访问第三方
         //获取结果

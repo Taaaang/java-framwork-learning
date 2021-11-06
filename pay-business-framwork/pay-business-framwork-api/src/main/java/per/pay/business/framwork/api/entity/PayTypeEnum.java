@@ -16,4 +16,18 @@ public enum PayTypeEnum {
     public String getSign() {
         return sign;
     }
+
+    public static PayTypeEnum transform(String name){
+        if(null==name||name.isEmpty()){
+            throw new RuntimeException("pay type name is empty!");
+        }
+        for (PayTypeEnum value : PayTypeEnum.values()) {
+            if(value.getSign().equals(name)){
+                return value;
+            }
+        }
+
+        throw new RuntimeException("no suitable pay type enum by "+name);
+    }
+
 }

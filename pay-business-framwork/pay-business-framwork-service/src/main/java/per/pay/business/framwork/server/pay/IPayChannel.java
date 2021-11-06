@@ -7,7 +7,7 @@ public interface IPayChannel {
 
     /**
      * 0:支付类型标识符，参考 {@link per.pay.business.framwork.api.entity.PayTypeEnum}
-     * 1:提供商标识符
+     * 1:提供商标识符,参考 {@link per.pay.business.framwork.api.entity.PaySupplierEnum}
      * @return 标识数组
      */
     String[] getChannelSign();

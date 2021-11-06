@@ -11,7 +11,7 @@ public class PayPropertyLoader {
 
     private List<IPayPropertyProvider> providers=new ArrayList<IPayPropertyProvider>(16);
 
-    public IPayPropertyProvider getProperty(String[] signs){
+    public IPayPropertyProvider getPropertyProvider(String[] signs){
         Assert.notNull(signs,"signs is empty! can not get properties");
         Assert.isTrue(signs.length>=2,"this signs not meet the specification ,at lease 2 sign!");
         if(providers.isEmpty()){
