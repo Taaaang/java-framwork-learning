@@ -1,6 +1,5 @@
 package per.pay.business.framwork.server.pay.channel;
 
-import per.pay.business.framwork.server.pay.IPayChannel;
 import per.pay.business.framwork.server.support.PayPropertyLoader;
 
 /**

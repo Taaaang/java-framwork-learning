@@ -10,15 +10,15 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import per.pay.business.framwork.api.entity.PayRequestBO;
+import per.pay.business.framwork.server.pay.channel.IPayChannel;
+import per.pay.business.framwork.server.pay.channel.PartnerPayResponse;
 import per.pay.business.framwork.server.pay.selector.AbstractPayChannelSelector;
-import per.pay.business.framwork.server.support.IPayPropertyProvider;
 import per.pay.business.framwork.server.support.PayPropertyLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Slf4j
@@ -45,13 +45,13 @@ public class PayManager implements ApplicationContextAware, SmartInitializingSin
     private PayPropertyLoader propertyLoader = new PayPropertyLoader();
     //渠道分级，支付宝App，微信App，支付宝页面等
 
-    public void payByChannel(PayRequestBO requestBO) {
+    public PartnerPayResponse payByChannel(PayRequestBO requestBO) {
         //通过筛选器 筛选支付通道
         IPayChannel payChannel = toSelector(requestBO);
         //通过支付通道进行支付请求
-        payChannel.payByChannel(requestBO);
+        PartnerPayResponse partnerResponse = payChannel.payByChannel(requestBO);
         //返回结果 TODO
-        return;
+        return partnerResponse;
     }
 
     private IPayChannel toSelector(PayRequestBO payRequestBO) {
@@ -78,8 +78,12 @@ public class PayManager implements ApplicationContextAware, SmartInitializingSin
         return channelsCopy.get(0);
     }
 
-
-    private IPayChannel accurateGet(String[] signs){
+    /**
+     * 直接获取channel，不经过Selector筛选
+     * @param signs 标识
+     * @return channel，若无法匹配将会抛出异常
+     */
+    public IPayChannel accurateGet(String[] signs){
         List<IPayChannel> channels = suppliersMap.get(signs[1]);
         Assert.notEmpty(channels,String.format("no suitable channels! signs supplier[%s]",signs[1]));
         for (IPayChannel channel : channels) {

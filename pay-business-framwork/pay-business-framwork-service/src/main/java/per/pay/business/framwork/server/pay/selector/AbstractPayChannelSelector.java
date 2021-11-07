@@ -3,8 +3,7 @@ package per.pay.business.framwork.server.pay.selector;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import per.pay.business.framwork.api.entity.PayRequestBO;
-import per.pay.business.framwork.server.pay.IPayChannel;
-import per.pay.business.framwork.server.support.IPayPropertyProvider;
+import per.pay.business.framwork.server.pay.channel.IPayChannel;
 import com.google.gson.Gson;
 import java.util.List;
 
