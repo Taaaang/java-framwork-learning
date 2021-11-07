@@ -20,6 +20,8 @@ public class PayResponseBO {
     //当code非0时存储错误提示信息
     private String errorMessage;
 
+    private PayResponseBO(){}
+
     public static PayResponseBO success(String data){
         PayResponseBO result=new PayResponseBO();
         result.code=SUCCESS;

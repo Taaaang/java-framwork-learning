@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import per.pay.business.framwork.api.entity.PayRequestBO;
+import per.pay.business.framwork.server.pay.channel.PartnerOfPayResponse;
 import per.pay.business.framwork.server.pay.selector.AbstractPayChannelSelector;
 import per.pay.business.framwork.server.support.IPayPropertyProvider;
 import per.pay.business.framwork.server.support.PayPropertyLoader;
@@ -45,13 +46,11 @@ public class PayManager implements ApplicationContextAware, SmartInitializingSin
     private PayPropertyLoader propertyLoader = new PayPropertyLoader();
     //渠道分级，支付宝App，微信App，支付宝页面等
 
-    public void payByChannel(PayRequestBO requestBO) {
+    public PartnerOfPayResponse payByChannel(PayRequestBO requestBO, long payId) {
         //通过筛选器 筛选支付通道
         IPayChannel payChannel = toSelector(requestBO);
         //通过支付通道进行支付请求
-        payChannel.payByChannel(requestBO);
-        //返回结果 TODO
-        return;
+        return payChannel.payByChannel(requestBO,payId);
     }
 
     private IPayChannel toSelector(PayRequestBO payRequestBO) {
@@ -79,7 +78,12 @@ public class PayManager implements ApplicationContextAware, SmartInitializingSin
     }
 
 
-    private IPayChannel accurateGet(String[] signs){
+    /**
+     * 根据 标识符 {@link IPayChannel}的getChannelSign()方法 获取渠道
+     * @param signs 标识符
+     * @return 渠道
+     */
+    public IPayChannel accurateGet(String[] signs){
         List<IPayChannel> channels = suppliersMap.get(signs[1]);
         Assert.notEmpty(channels,String.format("no suitable channels! signs supplier[%s]",signs[1]));
         for (IPayChannel channel : channels) {

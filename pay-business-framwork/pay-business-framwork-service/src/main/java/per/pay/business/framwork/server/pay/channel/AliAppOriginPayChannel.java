@@ -11,6 +11,8 @@ import per.pay.business.framwork.server.support.AliAppOriginPayPropertyProvider;
 import per.pay.business.framwork.server.support.IPayPropertyProvider;
 import per.pay.business.framwork.server.support.PayPropertyLoader;
 
+import java.util.Map;
+
 @Component
 public class AliAppOriginPayChannel extends AbstractPayChannel {
 
@@ -31,7 +33,7 @@ public class AliAppOriginPayChannel extends AbstractPayChannel {
     }
 
     @Override
-    public void payByChannel(PayRequestBO requestBO) {
+    public PartnerOfPayResponse payByChannel(PayRequestBO requestBO,long payId) {
         //获取配置属性
         IPayPropertyProvider<AliAppOriginPayPropertyProvider.AllAppOriginPayProperty> property = propertyLoader.getPropertyProvider(SIGNS);
         AliAppOriginPayPropertyProvider.AllAppOriginPayProperty properties = property.getProperty(SIGNS);
@@ -40,5 +42,13 @@ public class AliAppOriginPayChannel extends AbstractPayChannel {
         //访问第三方
         //获取结果
         //组装返回
+        //TODO
+        return null;
+    }
+
+    @Override
+    public PartnerOfCallbackResponse resolveParameter(Map<String, String[]> parameterMap) {
+        //TODO 根据第三方协议实现
+        return new PartnerOfCallbackResponse();
     }
 }
