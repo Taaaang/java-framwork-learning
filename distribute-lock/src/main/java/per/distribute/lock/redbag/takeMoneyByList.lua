@@ -11,6 +11,9 @@ if redis.call("hexists",KEYS[2],ARGV[1])==1 then
 end
 
 if redis.call("exists",KEYS[1])==0 then
+    if redis.call("exists",KEYS[2])==1 then
+       redis.call("del",KEYS[2])
+    end
     return -1;
 end
 

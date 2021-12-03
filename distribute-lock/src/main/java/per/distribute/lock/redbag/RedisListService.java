@@ -84,7 +84,6 @@ public class RedisListService implements IBagService {
                 throw new RuntimeException("该用户已领取过红包!");
             case -1:
             case 0:
-                jedis.del(redBagId);
                 throw new RuntimeException("红包已被领取完！-1");
             default:
                 return money;
@@ -101,6 +100,9 @@ public class RedisListService implements IBagService {
                 "end\n" +
                 "\n" +
                 "if redis.call(\"exists\",KEYS[1])==0 then\n" +
+                "    if redis.call(\"exists\",KEYS[2])==1 then\n" +
+                "       redis.call(\"del\",KEYS[2])\n" +
+                "    end\n" +
                 "    return -1;\n" +
                 "end\n" +
                 "\n" +
