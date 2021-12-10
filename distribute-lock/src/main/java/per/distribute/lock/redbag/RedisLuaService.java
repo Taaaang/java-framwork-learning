@@ -21,6 +21,7 @@ public class RedisLuaService implements IBagService {
 
     private static Random random = new Random();
 
+    @Override
     public String fill(Long userId, BigDecimal bigDecimal) {
         String redBagId = UUID.randomUUID().toString();
         //在redis中初始化用户钱包的金额
@@ -29,6 +30,7 @@ public class RedisLuaService implements IBagService {
         return redBagId;
     }
 
+    @Override
     public BigDecimal take(Long userId, Long takeUserId, String redBagId) {
         //通过lua控制并发
         return new BigDecimal(takeMoney(userId,takeUserId,redBagId));
@@ -46,14 +48,8 @@ public class RedisLuaService implements IBagService {
                 jedis.scriptLoad(luaOfTakeMoney());
             }
             //2.通过sha1进行访问脚本获取结果
-            List<String> key = new ArrayList<>();
-            key.add(RED_BAG_PREFIX + userId);
-            key.add(redBagId);
-            List<String> argv = new ArrayList<>();
             int randomMoney = random.nextInt(4);
-            argv.add((randomMoney + 1) + "");
-            argv.add(takeUserId + "");
-            takeMoney=checkMoney(((Long) jedis.evalsha(sha1, key, argv)).intValue());
+            takeMoney=checkMoney(((Long) jedis.evalsha(sha1, buildKeys(userId,redBagId), buildArgv(randomMoney+1,takeUserId))).intValue());
         }catch (Exception ex){
             throw new RuntimeException(ex);
         }finally {
@@ -62,6 +58,20 @@ public class RedisLuaService implements IBagService {
             }
         }
         return takeMoney;
+    }
+
+    private List<String> buildKeys(Long userId,String redBagId){
+        List<String> keys = new ArrayList<>();
+        keys.add(RED_BAG_PREFIX + userId);
+        keys.add(redBagId);
+        return keys;
+    }
+
+    private List<String> buildArgv(int money,long takeUserId){
+        List<String> argv = new ArrayList<>();
+        argv.add(money + "");
+        argv.add(takeUserId + "");
+        return argv;
     }
 
     private int checkMoney(int money){

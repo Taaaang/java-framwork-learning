@@ -62,12 +62,7 @@ public class RedisListService implements IBagService {
                 jedis.scriptLoad(luaOfTakeMoney());
             }
             //2.通过sha1进行访问脚本获取结果
-            List<String> key = new ArrayList<>();
-            key.add(RED_BAG_PREFIX + redBagId);
-            key.add(redBagId);
-            List<String> argv = new ArrayList<>();
-            argv.add(takeUserId + "");
-            takeMoney=checkMoney(((Long) jedis.evalsha(sha1, key, argv)).intValue(),jedis,redBagId);
+            takeMoney=checkMoney(((Long) jedis.evalsha(sha1, buildKeys(redBagId), buildArgv(takeUserId))).intValue(),jedis,redBagId);
         }catch (Exception ex){
             throw new RuntimeException(ex);
         }finally {
@@ -76,6 +71,19 @@ public class RedisListService implements IBagService {
             }
         }
         return new BigDecimal(takeMoney);
+    }
+
+    private List<String> buildKeys(String redBagId){
+        List<String> keys = new ArrayList<>();
+        keys.add(RED_BAG_PREFIX + redBagId);
+        keys.add(redBagId);
+        return keys;
+    }
+
+    private List<String> buildArgv(long takeUserId){
+        List<String> argv = new ArrayList<>();
+        argv.add(takeUserId + "");
+        return argv;
     }
 
     private int checkMoney(int money,Jedis jedis,String redBagId){
