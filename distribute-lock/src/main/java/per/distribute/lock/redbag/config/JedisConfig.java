@@ -20,8 +20,9 @@ public class JedisConfig {
     public static void init(){
         if(init.compareAndSet(false,true)){
             GenericObjectPoolConfig<Jedis> poolConfig=new GenericObjectPoolConfig<>();
+            poolConfig.setMaxTotal(30);
             poolConfig.setMaxWaitMillis(1000L);
-            jedisPool=new JedisPool(poolConfig,"192.168.0.102",6379);
+            jedisPool=new JedisPool(poolConfig,"127.0.0.1",6379);
         }
     }
 
