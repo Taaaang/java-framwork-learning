@@ -23,6 +23,11 @@ public class WeChatAppOriginPayPropertyProvider implements IPayPropertyProvider<
         return new WeChatAppOriginPayProperty();
     }
 
+    @Override
+    public void buildProperty(WeChatAppOriginPayProperty properties) {
+
+    }
+
     public boolean isAllow(String[] channelSign) {
         return SIGN[0].equals(channelSign[0].trim())&&
                 SIGN[1].equals(channelSign[1].trim());

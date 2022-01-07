@@ -59,10 +59,7 @@ public class LockTest {
 
     /*try {
       */
-    while (true){
-      if(endCount.get()==threadCount){
-        break;
-      }
+    while (endCount.get() != threadCount) {
       Thread.sleep(200L);
     }
     log(intWrapper.get()+"");

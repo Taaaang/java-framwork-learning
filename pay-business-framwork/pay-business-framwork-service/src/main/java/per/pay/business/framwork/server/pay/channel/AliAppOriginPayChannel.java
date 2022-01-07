@@ -51,4 +51,9 @@ public class AliAppOriginPayChannel extends AbstractPayChannel {
         //TODO 根据第三方协议实现
         return new PartnerOfCallbackResponse();
     }
+
+    @Override
+    public PartnerOfCallbackResponse queryPayInfo(long payId) {
+        return null;
+    }
 }
