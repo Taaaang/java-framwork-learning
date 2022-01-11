@@ -6,14 +6,32 @@
 </head>
 <body>
 <h1 style="color: red">请登陆！！！！</h1>
-<form name="login" method="post" action="/access/toLogin">
+<form id="login">
     username:<br>
     <input type="text" name="username" value="">
     <br>
     password:<br>
     <input type="text" name="password" value="">
     <br><br>
-    <input type="submit" value="提交">
+    <input type="hidden" name="page" id="page"/>
+    <input type="submit" value="提交" onclick="toLogin()">
 </form>
 </body>
+<script>
+    function toLogin() {
+        var login = document.getElementById('login');
+        login.method='get';
+        login.action='/access/toLogin';
+        var page = document.getElementById('page');
+        page.value=getQueryString('page');
+        login.submit();
+    }
+
+    //获取url上的参数
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+</script>
 </html>

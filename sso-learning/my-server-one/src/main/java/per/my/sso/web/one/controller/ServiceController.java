@@ -1,4 +1,4 @@
-package per.my.sso.web.two.controller;
+package per.my.sso.web.one.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Email：tangwenbiao@souche.com
  * @CreateTime：2022/1/7 - 10:16 上午
  **/
-@RequestMapping("two")
+@RequestMapping("one")
 @Controller
 public class ServiceController {
 

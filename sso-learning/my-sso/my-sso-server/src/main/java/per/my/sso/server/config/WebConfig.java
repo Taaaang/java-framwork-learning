@@ -22,7 +22,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SSOAuthFilter(ssoService));
+        registry.addInterceptor(new SSOAuthFilter(ssoService))
+                .excludePathPatterns("/access/toLogin")
+                .excludePathPatterns("/access/verify")
+                .excludePathPatterns("/login.html");
     }
 
 }

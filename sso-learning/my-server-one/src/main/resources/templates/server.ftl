@@ -5,6 +5,6 @@
     <title>FreeMarker</title>
 </head>
 <body>
-<h1 style="color: red">【two】server two hello world !</h1>
+<h1 style="color: red">【one】server two hello world !</h1>
 </body>
 </html>
