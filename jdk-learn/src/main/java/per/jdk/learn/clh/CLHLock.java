@@ -8,6 +8,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.LockSupport;
 
 /**
+ * CLH 锁，通过持有前驱，隐式成链，
+ * 优点：自身与前驱存储在ThreadLocal，将入队的竞争点锁定在tail的获取与设置上
+ * 缺点：通过自旋等待获取锁，非常浪费cpu资源
  * @Author：TangWenBiao
  * @Email：tangwenbiao@souche.com
  * @CreateTime：2022/3/31 - 1:35 下午
