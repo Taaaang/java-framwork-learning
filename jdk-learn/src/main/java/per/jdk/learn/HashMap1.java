@@ -3,6 +3,8 @@ package per.jdk.learn;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.locks.LockSupport;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -14,10 +16,17 @@ import java.util.function.Function;
 public class HashMap1 {
 
 
-    public static void main(String[] args) {
-
-        ScheduledThreadPoolExecutor executor=new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
-
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //LockSupport.park(this);
+                System.out.println("测试park");
+            }
+        });
+        thread.start();
+        thread.interrupt();
+        System.out.println("完");
     }
 
     private static class TestHashCode{
