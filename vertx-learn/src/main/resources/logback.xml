@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <property name="LOG_DIR_PREFIX" value="${user.home}/projects" />
+    <property name="PROJECT_NAME" value="danube-usedcar-market" />
+    <property name="LOG_PATTERN" value="%d [%thread] %-5p [%c] [%F:%L] - %msg%n"/>
+
+    <!--普通日志滚动配置-->
+    <appender name="FILE-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMismatch>ACCEPT</onMismatch>
+            <onMatch>DENY</onMatch>
+        </filter>
+        <file>${LOG_DIR_PREFIX}/${PROJECT_NAME}/logs/${PROJECT_NAME}_lt_info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR_PREFIX}/${PROJECT_NAME}/logs/${PROJECT_NAME}_lt_info.log-%d{yyyy-MM-dd-HH}</fileNamePattern>
+            <maxHistory>48</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <pattern>${LOG_PATTERN}</pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <!-- encoders 作用是将logger事件转换成字节数组，并将字节数组写入到输出流-->
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>${LOG_PATTERN}</pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="FILE-INFO"/>
+        <!-- STDOUT appender是输出日志到控制台，为节省线上磁盘空间占用，默认关闭-->
+        <!-- 如果本地开发有控制台看日志需求，请本地主动打开，不建议线上打开 -->
+         <appender-ref ref="STDOUT"/>
+
+    </root>
+</configuration>
